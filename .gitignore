@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+venv
 
 # testing
 /coverage
@@ -12,6 +13,7 @@
 /build
 
 # misc
+__pycache__
 .DS_Store
 .env.local
 .env.development.local
