@@ -11,6 +11,7 @@ venv
 
 # production
 /build
+.env
 
 # misc
 __pycache__
