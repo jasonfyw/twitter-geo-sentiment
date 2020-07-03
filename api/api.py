@@ -33,5 +33,24 @@ def predict_tweets():
         'predictions': predictions.tolist()
     }
 
+@app.route('/get_tweets', methods = ['POST'])
+def get_tweets():
+    req = request.get_json()
+    keywords = req['keywords']
+    latest_date = req['latest_date']
 
+    query = "q={}%20&result_type={}&lang={}&count={}&until={}".format(keywords.replace(' ', '%20'), 'mixed', 'en', '100', latest_date)
+    query_res = api.GetSearch(raw_query = query)
+
+    json_res = {"tweets": []}
+    for status in query_res:
+        json_tweet = {
+            "id": status.id,
+            "user": status.user.screen_name,
+            "date": status.created_at,
+            "text": status.text
+        }
+        json_res['tweets'].append(json_tweet)
+    
+    return json_res
     
