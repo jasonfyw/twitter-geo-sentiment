@@ -37,10 +37,17 @@ def predict_tweets():
 def get_tweets():
     req = request.get_json()
     keywords = req['keywords']
-    latest_date = req['latest_date']
-
-    query = "q={}%20&result_type={}&lang={}&count={}&until={}".format(keywords.replace(' ', '%20'), 'mixed', 'en', '100', latest_date)
-    query_res = api.GetSearch(raw_query = query)
+    since_date = req['since_date']
+    until_date = req['until_date']
+    
+    query_res = api.GetSearch(
+        term = keywords.replace(' ', '%20'),
+        result_type = "popular",
+        lang = "en",
+        count = 100,
+        since = since_date,
+        until = until_date
+    )
 
     json_res = {"tweets": []}
     for status in query_res:
