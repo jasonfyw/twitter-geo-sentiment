@@ -42,7 +42,7 @@ def get_tweets():
     
     query_res = api.GetSearch(
         term = keywords.replace(' ', '%20'),
-        result_type = "popular",
+        result_type = "mixed",
         lang = "en",
         count = 100,
         since = since_date,
@@ -50,6 +50,7 @@ def get_tweets():
     )
 
     json_res = {"tweets": []}
+    sa_res = []
     for status in query_res:
         json_tweet = {
             "id": status.id,
@@ -58,6 +59,16 @@ def get_tweets():
             "text": status.text
         }
         json_res['tweets'].append(json_tweet)
+        sa_res.append(status.text)
+
+    # predictions = clf.predict(
+    #     vectoriser.transform(sa_res)
+    # ).tolist()
     
+    # return {
+    #     'outlook': sum(predictions) / len(predictions),
+    #     'total_tweets': len(predictions)
+    # }
     return json_res
+
     
