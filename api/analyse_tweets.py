@@ -22,8 +22,8 @@ def process_tweet(text):
     return text
 
 
-@analyse_tweets.route('/analyse_tweets', methods = ['POST'])
-def analyse_tweets():
+@analyse_tweets.route('/analyse_tweets_list', methods = ['POST'])
+def analyse_tweets_list():
     req = request.get_json()
 
     predictions = general_sa_clf.predict(
