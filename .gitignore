@@ -33,4 +33,4 @@ twitter_general_training_data.csv
 twitter_stock_training_data.csv
 
 # local data storage
-data
+api/data
