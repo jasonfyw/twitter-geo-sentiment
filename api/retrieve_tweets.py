@@ -39,7 +39,7 @@ def collate_tweets():
 
     # dump json to file
     if save_locally:
-        with open('usa_data_output.txt', 'w+') as output:
+        with open('data/usa_data_output.txt', 'w+') as output:
             json.dump(tweets_by_location, output)
 
     return jsonify({ 'tweets': tweets_by_location })

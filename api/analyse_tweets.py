@@ -69,7 +69,7 @@ def analyse_collated_tweets():
 @analyse_tweets.route('/analyse_sample_tweets', methods = ['GET'])
 def analyse_sample_tweets():
 
-    with open('usa_data_output.txt') as f:
+    with open('data/usa_data_output.txt') as f:
         tweets = json.load(f)
 
     collated_predictions = {}
