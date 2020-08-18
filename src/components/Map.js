@@ -56,6 +56,18 @@ class Map extends Component {
         }
     }
 
+    getTotalTweets = (id) => {
+        const data = allStates.find(s => s.val === id);
+        if (data) {
+            const fullname = data.fullname;
+
+            const sentimentData = this.state.sentimentByState[fullname];
+            return sentimentData.total_tweets;
+        } else {
+            return null
+        }
+    }
+
     getColour = (id) => {
         const sentiment = this.getSentiment(id)
 
@@ -81,7 +93,16 @@ class Map extends Component {
                                         geography={geo}
                                         fill={this.getColour(geo.id)}
                                         onMouseEnter={() => {
-                                            this.props.setTooltipContent(`${this.getStateFullname(geo.id)} – ${this.getSentiment(geo.id)}`);
+                                            const fullname = this.getStateFullname(geo.id);
+                                            const sentiment = this.getSentiment(geo.id);
+                                            const totalTweets = this.getTotalTweets(geo.id)
+                                            this.props.setTooltipContent(
+                                                <span>
+                                                    <b>{fullname} – {sentiment}</b>
+                                                    <br />
+                                                    <i>Tweet count: {totalTweets}</i>
+                                                </span>
+                                            );
                                         }}
                                         onMouseLeave={() => {
                                             this.props.setTooltipContent("");

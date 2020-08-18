@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import ReactTooltip from "react-tooltip";
+import { Container } from 'react-bootstrap';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,7 +16,6 @@ class App extends Component {
 
     setTooltipContent = (content) => {
         this.setState({ tooltipContent: content })
-        console.log(content)
     }
 
     componentDidMount() {
@@ -25,24 +25,29 @@ class App extends Component {
 
 
     render() {
-        // const renderedComponent = (this.state.sentimentByState.length > 0) ? <Map sentimentByState={this.state.sentimentByState} /> : <div /> 
-        // console.log((this.state.sentimentByState.length > 0) ? 'results' : 'no results')
-
         const response = this.state.sentimentByState;
-
-        if (response === null) { return null }
-
 
         return (
             <div className="App">
-                {
-                    !(response === null) && (
-                        <React.Fragment>
-                            <Map sentimentByState={response.results} setTooltipContent={this.setTooltipContent} />
-                            <ReactTooltip>{this.state.tooltipContent}</ReactTooltip>
-                        </React.Fragment>
-                    )
-                }
+                <Container>
+                    {
+                        !(response === null) && (
+                            <React.Fragment>
+                                <h1>Showing sentiment resuslts for '{response.query}'</h1>
+                                <p>Total tweets analysed: {response.total_tweets}</p>
+                                <Map sentimentByState={response.results} setTooltipContent={this.setTooltipContent} />
+
+                                <p>
+                                    <b>Legend</b> <br />
+                                    <i>1 (green) = positive</i> <br />
+                                    <i>0 (red) = negative</i>
+                                </p>
+
+                                <ReactTooltip>{this.state.tooltipContent}</ReactTooltip>
+                            </React.Fragment>
+                        )
+                    }
+                </Container>
             </div>
         );
     }
