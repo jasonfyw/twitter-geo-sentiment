@@ -4,6 +4,9 @@ import os
 import pickle
 import twitter
 
+from retrieve_tweets import retrieve_tweets
+from analyse_tweets import analyse_tweets
+
 app = Flask(__name__)
 
 # unpickle pre-trained NB classifier and vectoriser
@@ -19,56 +22,8 @@ api = twitter.Api(
     access_token_secret = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
 )
 
-# get sentiment from a json array of strings
-@app.route('/predict_tweets', methods = ['POST'])
-def predict_tweets():
-    req = request.get_json()
 
-    predictions = clf.predict(
-        vectoriser.transform(req['tweets'])
-    )
+# register blueprint routes
+app.register_blueprint(retrieve_tweets)
+app.register_blueprint(analyse_tweets)
 
-    # 1: positive outlook, -1: negative outlook
-    return {
-        'predictions': predictions.tolist()
-    }
-
-@app.route('/get_tweets', methods = ['POST'])
-def get_tweets():
-    req = request.get_json()
-    keywords = req['keywords']
-    since_date = req['since_date']
-    until_date = req['until_date']
-    
-    query_res = api.GetSearch(
-        term = keywords.replace(' ', '%20'),
-        result_type = "mixed",
-        lang = "en",
-        count = 100,
-        since = since_date,
-        until = until_date
-    )
-
-    json_res = {"tweets": []}
-    sa_res = []
-    for status in query_res:
-        json_tweet = {
-            "id": status.id,
-            "user": status.user.screen_name,
-            "date": status.created_at,
-            "text": status.text
-        }
-        json_res['tweets'].append(json_tweet)
-        sa_res.append(status.text)
-
-    # predictions = clf.predict(
-    #     vectoriser.transform(sa_res)
-    # ).tolist()
-    
-    # return {
-    #     'outlook': sum(predictions) / len(predictions),
-    #     'total_tweets': len(predictions)
-    # }
-    return json_res
-
-    
