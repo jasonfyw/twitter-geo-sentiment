@@ -73,11 +73,16 @@ def analyse_sample_tweets():
         tweets = json.load(f)
 
     collated_predictions = {}
+    total_tweets = 0
 
     for state in tweets.keys():
         tweet_texts = []
+        total_state_tweets = 0
 
         for tweet in tweets[state]:
+            total_tweets += 1
+            total_state_tweets += 1
+
             text = tweet['text']
             processed_text = process_tweet(text)
 
@@ -90,10 +95,15 @@ def analyse_sample_tweets():
 
         mean_average = round(sum(general_sa_predictions) / len(general_sa_predictions), 5)
         collated_predictions[state] = {
-            "mean": mean_average
+            'mean': mean_average,
+            'total_tweets': total_state_tweets
         }
 
 
-    return jsonify({ 'results': collated_predictions })
+    return jsonify({
+        'query': 'trump', 
+        'total_tweets': total_tweets,
+        'results': collated_predictions 
+    })
 
 
