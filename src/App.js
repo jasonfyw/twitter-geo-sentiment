@@ -33,7 +33,7 @@ class App extends Component {
                     {
                         !(response === null) && (
                             <React.Fragment>
-                                <h1>Showing sentiment resuslts for '{response.query}'</h1>
+                                <h1>Showing Twitter sentiment by state for '{response.query}'</h1>
                                 <p>Total tweets analysed: {response.total_tweets}</p>
                                 <Map sentimentByState={response.results} setTooltipContent={this.setTooltipContent} />
 
