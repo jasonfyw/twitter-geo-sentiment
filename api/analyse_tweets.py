@@ -14,14 +14,16 @@ general_sa_clf = pickle.load(open('sentiment_analysis/nb_general_sentiment_model
 general_sa_vectoriser = pickle.load(open('sentiment_analysis/vectoriser_general.p', 'rb'))
 
 
+# remove unecessary elements from tweet
 def process_tweet(text):
-    text = text.lower() # convert text to lower-case
+    text = text.lower() # convert text to lowercase
     text = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', text) # remove URLs
     text = re.sub('@[^\s]+', 'AT_USER', text) # remove usernames
-    text = re.sub(r'#([^\s]+)', r'\1', text) # remove the # in #hashtag
+    text = re.sub(r'#([^\s]+)', r'\1', text) # remove the # in hashtags
     return text
 
 
+# analyse a one-dimensional array of tweet objects
 @analyse_tweets.route('/analyse_tweets_list', methods = ['POST'])
 def analyse_tweets_list():
     req = request.get_json()
@@ -36,6 +38,7 @@ def analyse_tweets_list():
     }
 
 
+# analyse a dictionary with locations as keys and tweets as values
 @analyse_tweets.route('/analyse_collated_tweets', methods = ['POST'])
 def analyse_collated_tweets():
     # TODO – add error handling
@@ -66,6 +69,8 @@ def analyse_collated_tweets():
 
     return jsonify({ 'results': collated_predictions })
 
+
+# provide sentiment analysis on a locally saved collection of tweets for testin
 @analyse_tweets.route('/analyse_sample_tweets', methods = ['GET'])
 def analyse_sample_tweets():
 

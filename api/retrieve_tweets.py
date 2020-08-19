@@ -5,6 +5,8 @@ import json
 
 retrieve_tweets = Blueprint('retrieve_tweets', __name__)
 
+# load and generate a bearer token for the Premium Twitter Search API
+# keys stored in twitter_cred.yaml 
 search_args = load_credentials(
         'twitter_cred.yaml',
         yaml_key = "search_tweets_30_day_dev",
@@ -15,7 +17,7 @@ states_list = ["Alaska", "Alabama", "Arkansas", "Arizona", "California", "Colora
 
 
 
-# multiple API request and collate into large collection
+# multiple API requests by location and collate into large collection
 @retrieve_tweets.route('/collate_tweets', methods = ['POST'])
 def collate_tweets():
     # TODO – add error handling
@@ -45,7 +47,7 @@ def collate_tweets():
     return jsonify({ 'tweets': tweets_by_location })
 
 
-# returns sample tweets saved in file
+# returns localled saved sample tweets for testing
 @retrieve_tweets.route('/get_sample_tweets', methods = ['GET'])
 def get_sample_tweets():
     with open('usa_data_output.txt') as f:
