@@ -28,9 +28,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# training data
+# training data and notebooks
 twitter_general_training_data.csv
 twitter_stock_training_data.csv
+general_sentiment_analysis_model.ipynb
+sentiment_analysis_model.ipynb
 
 # local data storage
 api/data
