@@ -15,10 +15,23 @@ const SidebarWrapper = styled.div`
     background-color: #D8DEE9;
 `;
 
+const TitleDiv = styled.div`
+    margin-bottom: 1.5rem;
+`;
+const Title = styled.h1`
+    font-size: 4rem;
+    font-weight: 500;
+    margin-bottom: 0rem;
+`;
+
 class Sidebar extends Component {
     render() {
         return (
             <SidebarWrapper>
+                <TitleDiv>
+                    <Title>TGSAT</Title>
+                    <p>Twitter Geo-Sentiment Analysis Tool</p>
+                </TitleDiv>
                 <QueryForm />
             </SidebarWrapper>
         );
