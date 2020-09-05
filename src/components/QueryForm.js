@@ -4,8 +4,10 @@ import { Container, Button } from 'react-bootstrap';
 
 
 const TextInput = styled.input`
+    width: 100%;
     padding: 0.75rem;
-    margin-left: 0.5rem;
+    margin-left: 0.2rem;
+    margin-right: 0.5rem;
 
     outline: none !important;
     border: none;
@@ -15,6 +17,10 @@ const TextInput = styled.input`
         outline: none !important;
         border: none;
     }
+`;
+const InputLabel = styled.label`
+    padding: 0.25rem;
+    padding-right: 0.5rem;
 `;
 
 const SubmitButton = styled(Button)`
@@ -36,7 +42,7 @@ class QueryForm extends Component {
     render() {
         return (
             <Container>
-                <label>Query</label>
+                <InputLabel>Query</InputLabel>
                 <TextInput type="text" value={this.state.keywords} placeholder="Keywords" onChange={(e) => {
                     this.setState({ keywords: e.target.value })
                 }} />
