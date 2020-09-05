@@ -8,7 +8,7 @@ import Map from './Map';
 class QueryOutput extends Component {
     state = {
         loading: null,
-        sentimentByState: null,
+        data: null,
         tooltipContent: ''
     }
 
@@ -21,13 +21,13 @@ class QueryOutput extends Component {
             Axios.get('http://localhost:3000/analyse_sample_tweets')
                 .then(res => this.setState({ 
                     loading: false,
-                    sentimentByState: res.data 
+                    data: res.data 
                 }));
         })
     }
 
     render() {
-        const response = this.state.sentimentByState;
+        const data = this.state.data;
 
         return (
             <div>
@@ -35,12 +35,12 @@ class QueryOutput extends Component {
                     this.state.loading ? (
                         <Spinner animation="grow" variant="dark" />
                     ) : (
-                        !(response === null) && (
+                        !(data === null) && (
                             <React.Fragment>
-                                <h1>Showing Twitter sentiment by state for '{response.query}'</h1>
-                                <p>Total tweets analysed: {response.total_tweets}</p>
+                                <h1>Showing Twitter sentiment by state for '{data.query}'</h1>
+                                <p>Total tweets analysed: {data.total_tweets}</p>
     
-                                <Map sentimentByState={response.results} setTooltipContent={this.setTooltipContent} />
+                                <Map sentimentByState={data.results} setTooltipContent={this.setTooltipContent} />
     
                                 <p>
                                     <b>Legend</b> <br />
