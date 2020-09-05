@@ -32,7 +32,8 @@ class Sidebar extends Component {
                     <Title>TGSAT</Title>
                     <p>Twitter Geo-Sentiment Analysis Tool</p>
                 </TitleDiv>
-                <QueryForm />
+
+                <QueryForm createQuery={this.props.createQuery} />
             </SidebarWrapper>
         );
     }

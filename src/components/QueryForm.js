@@ -26,22 +26,22 @@ const SubmitButton = styled(Button)`
 class QueryForm extends Component {
 
     state = {
-        queryInput: ''
+        keywords: ''
     }
 
-    createQuery = () => {
-        alert(this.state.queryInput)
+    submitQuery = () => {
+        this.props.createQuery(this.state.keywords)
     }
 
     render() {
         return (
             <Container>
                 <label>Query</label>
-                <TextInput type="text" value={this.state.queryInput} placeholder="Keywords" onChange={(e) => {
-                    this.setState({ queryInput: e.target.value })
+                <TextInput type="text" value={this.state.keywords} placeholder="Keywords" onChange={(e) => {
+                    this.setState({ keywords: e.target.value })
                 }} />
 
-                <SubmitButton variant="btn btn-success" onClick={this.createQuery}>
+                <SubmitButton variant="btn btn-success" onClick={this.submitQuery}>
                     Submit
                 </SubmitButton>
 

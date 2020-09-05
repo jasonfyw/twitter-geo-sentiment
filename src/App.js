@@ -8,14 +8,21 @@ import Content from './components/Content';
 
 
 class App extends Component {
+    state = {
+        showOutput: false
+    }
+
+    createQuery = (keywords) => {
+        this.setState({ showOutput: true })
+    }
 
 
     render() {
 
         return (
             <div className="App">
-                <Sidebar />
-                <Content />
+                <Sidebar createQuery={this.createQuery} />
+                <Content showOutput={this.state.showOutput} />
             </div>
         );
     }
