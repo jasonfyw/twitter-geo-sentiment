@@ -4,8 +4,6 @@ import re
 import json
 
 
-analyse_tweets = Blueprint('analyse_tweets', __name__)
-
 # unpickle pre-trained classifiers and vectrisers
 stock_sa_clf = pickle.load(open('sentiment_analysis/nb_sentiment_model.p', 'rb'))
 stock_sa_vectoriser = pickle.load(open('sentiment_analysis/vectoriser.p', 'rb'))
@@ -23,92 +21,48 @@ def process_tweet(text):
     return text
 
 
-# analyse a one-dimensional array of tweet objects
-@analyse_tweets.route('/analyse_tweets_list', methods = ['POST'])
-def analyse_tweets_list():
-    req = request.get_json()
 
-    predictions = general_sa_clf.predict(
-        general_sa_vectoriser.transform(req['tweets'])
-    )
-
-    # 1: positive outlook, -1: negative outlook
-    return {
-        'results': predictions.tolist()
-    }
-
-
-# analyse a dictionary with locations as keys and tweets as values
-@analyse_tweets.route('/analyse_collated_tweets', methods = ['POST'])
-def analyse_collated_tweets():
-    # TODO – add error handling
-    tweets = request.json['tweets']
-
-    collated_predictions = {}
-
-    for state in tweets.keys():
-        tweet_texts = []
-
-        for tweet in tweets[state]:
-            text = tweet['text']
-            processed_text = process_tweet(text)
-
-            tweet_texts.append(processed_text)
-
-        general_sa_predictions = general_sa_clf.predict(
-            general_sa_vectoriser.transform(tweet_texts)
-        )
-        general_sa_predictions = [1 if res == 4 else int(res) for res in general_sa_predictions]
-
-        mean_average = round(sum(general_sa_predictions) / len(general_sa_predictions), 2)
-        collated_predictions[state] = {
-            "mean": mean_average,
-            "raw_predictions": general_sa_predictions
-        }
-
-
-    return jsonify({ 'results': collated_predictions })
-
-
-# provide sentiment analysis on a locally saved collection of tweets for testin
-@analyse_tweets.route('/analyse_sample_tweets', methods = ['GET'])
-def analyse_sample_tweets():
-
-    with open('data/usa_data_output.txt') as f:
-        tweets = json.load(f)
-
+def analyse_collated_tweets(tweets):
     collated_predictions = {}
     total_tweets = 0
 
-    for state in tweets.keys():
-        tweet_texts = []
-        total_state_tweets = 0
+    # iterate through tweets from each location
+    for location in tweets.keys():
 
-        for tweet in tweets[state]:
-            total_tweets += 1
-            total_state_tweets += 1
+        if len(tweets[location]) > 0:
 
-            text = tweet['text']
-            processed_text = process_tweet(text)
+            # extract tweets' text and create an array for every location
+            tweet_texts = []
+            for tweet in tweets[location]:
+                total_tweets += 1
 
-            tweet_texts.append(processed_text)
+                text = tweet['text']
+                processed_text = process_tweet(text)
 
-        general_sa_predictions = general_sa_clf.predict(
-            general_sa_vectoriser.transform(tweet_texts)
-        )
-        general_sa_predictions = [1 if res == 4 else int(res) for res in general_sa_predictions]
+                tweet_texts.append(processed_text)
 
-        mean_average = round(sum(general_sa_predictions) / len(general_sa_predictions), 5)
-        collated_predictions[state] = {
-            'mean': mean_average,
-            'total_tweets': total_state_tweets
-        }
+            # generate an array of sentiment predictions corresponding to each tweet
+            general_sa_predictions = general_sa_clf.predict(
+                general_sa_vectoriser.transform(tweet_texts)
+            )
+            # conver to binary classifiction (0 or 1)
+            general_sa_predictions = [1 if res == 4 else int(res) for res in general_sa_predictions]
 
+            # calculate averages
+            mean_average = round(sum(general_sa_predictions) / len(general_sa_predictions), 2)
 
-    return jsonify({
-        'query': 'trump', 
-        'total_tweets': total_tweets,
-        'results': collated_predictions 
-    })
+            collated_predictions[location] = {
+                "mean": mean_average,
+                "total_tweets": len(general_sa_predictions),
+                "raw_predictions": list(general_sa_predictions)
+            }
 
+        else:
+            collated_predictions[location] = {
+                "mean": 0,
+                "total_tweets": 0,
+                "raw_predictions": []
+            }
+
+    return collated_predictions, total_tweets
 

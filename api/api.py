@@ -3,12 +3,10 @@ import numpy as np
 import os
 import pickle
 
-from retrieve_tweets import retrieve_tweets
-from analyse_tweets import analyse_tweets
+from query import query
 
 app = Flask(__name__)
 
 # register blueprint routes
-app.register_blueprint(retrieve_tweets)
-app.register_blueprint(analyse_tweets)
+app.register_blueprint(query)
 

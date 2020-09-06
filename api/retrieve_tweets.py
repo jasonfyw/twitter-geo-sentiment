@@ -3,8 +3,6 @@ from searchtweets import load_credentials, collect_results
 import json
 
 
-retrieve_tweets = Blueprint('retrieve_tweets', __name__)
-
 # load and generate a bearer token for the Premium Twitter Search API
 # keys stored in twitter_cred.yaml 
 search_args = load_credentials(
@@ -13,17 +11,15 @@ search_args = load_credentials(
         env_overwrite = False
     )
 
-states_list = ["Alaska", "Alabama", "Arkansas", "Arizona", "California", "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", "North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"]
-
+# states_list = ["Alaska", "Alabama", "Arkansas", "Arizona", "California", "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", "North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"]
+states_list = ["California", "Colorado", "Connecticut", "New Jersey", "Delaware", "New York", "Pennsylvania"]
 
 
 # multiple API requests by location and collate into large collection
-@retrieve_tweets.route('/collate_tweets', methods = ['POST'])
-def collate_tweets():
-    # TODO – add error handling
-    keywords = request.json['keywords']
-    save_locally = request.json.get('save_locally', False)
-
+def collate_tweets(
+    keywords, 
+    max_tweets_per_request = 100
+):
     tweets_by_location = {}
 
     for state in states_list:
@@ -33,28 +29,10 @@ def collate_tweets():
             {
                 "query": query
             },
-            max_results = 100,
+            max_results = max_tweets_per_request,
             result_stream_args = search_args
         )
 
         tweets_by_location[state] = tweets
 
-    # dump json to file
-    if save_locally:
-        with open('data/usa_data_output.txt', 'w+') as output:
-            json.dump(tweets_by_location, output)
-
-    return jsonify({ 'tweets': tweets_by_location })
-
-
-# returns localled saved sample tweets for testing
-@retrieve_tweets.route('/get_sample_tweets', methods = ['GET'])
-def get_sample_tweets():
-    with open('usa_data_output.txt') as f:
-        data = json.load(f)
-
-    return jsonify({ 'tweets': data })
-
-
-
-
+    return tweets_by_location
