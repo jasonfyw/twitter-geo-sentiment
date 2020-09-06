@@ -33,49 +33,37 @@ class Map extends Component {
         sentimentByState: this.props.sentimentByState
     }
 
-    getSentiment = (id) => {
-        const data = allStates.find(s => s.val === id);
-        if (data) {
-            const fullname = data.fullname;
+    getLocationData = (id) => {
+        // retrieve state full name
+        const stateInfo = allStates.find(s => s.val === id);
 
-            const sentimentData = this.state.sentimentByState[fullname];
-            return sentimentData.mean;
+        if (stateInfo) {
+            const stateName = stateInfo.fullname;
+    
+            const data = {
+                fullName: stateName,
+                sentiment: (stateName in this.state.sentimentByState) ? this.state.sentimentByState[stateName].mean : null,
+                totalTweets: (stateName in this.state.sentimentByState) ? this.state.sentimentByState[stateName].total_tweets : 0
+            }
+    
+            return data
         } else {
             return null
         }
-        
-    }
 
-    getStateFullname = (id) => {
-        const data = allStates.find(s => s.val === id);
-        if (data) {
-            const fullname = data.fullname;
-            return fullname
-        } else {
-            return null
-        }
-    }
 
-    getTotalTweets = (id) => {
-        const data = allStates.find(s => s.val === id);
-        if (data) {
-            const fullname = data.fullname;
-
-            const sentimentData = this.state.sentimentByState[fullname];
-            return sentimentData.total_tweets;
-        } else {
-            return null
-        }
     }
 
     getColour = (id) => {
-        const sentiment = this.getSentiment(id)
+        const data = this.getLocationData(id)
 
-        if (sentiment === null) {
-            return 'hsl(0, 4%, 72%)'
-        } else {
-            return `hsl(${100 * sentiment}, 75%, 45%)`
+        if (data !== null) {
+            if (data.sentiment !== null) {
+                return `hsl(${100 * data.sentiment}, 75%, 45%)`
+            }
         }
+
+        return 'hsl(0, 4%, 72%)'
     }
 
 
@@ -93,14 +81,12 @@ class Map extends Component {
                                         geography={geo}
                                         fill={this.getColour(geo.id)}
                                         onMouseEnter={() => {
-                                            const fullname = this.getStateFullname(geo.id);
-                                            const sentiment = this.getSentiment(geo.id);
-                                            const totalTweets = this.getTotalTweets(geo.id)
+                                            const data = this.getLocationData(geo.id)
                                             this.props.setTooltipContent(
                                                 <span>
-                                                    <b>{fullname} – {sentiment}</b>
+                                                    <b>{data.fullName} – {(data.sentiment === null) ? 'no data' : data.sentiment}</b>
                                                     <br />
-                                                    <i>Tweet count: {totalTweets}</i>
+                                                    <i>Tweet count: {data.totalTweets}</i>
                                                 </span>
                                             );
                                         }}
