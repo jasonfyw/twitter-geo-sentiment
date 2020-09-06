@@ -9,11 +9,19 @@ import Content from './components/Content';
 
 class App extends Component {
     state = {
-        showOutput: false
+        showOutput: false,
+        query: null
     }
 
-    createQuery = (keywords) => {
-        this.setState({ showOutput: true })
+    submitQuery = (keywords) => {
+        const query = {
+            keywords: keywords,
+            max_tweets_per_request: 20
+        }
+        this.setState({ 
+            showOutput: true,
+            query: query
+        })
     }
 
 
@@ -21,8 +29,8 @@ class App extends Component {
 
         return (
             <div className="App">
-                <Sidebar createQuery={this.createQuery} />
-                <Content showOutput={this.state.showOutput} />
+                <Sidebar createQuery={this.submitQuery} />
+                <Content showOutput={this.state.showOutput} newQuery={this.state.query} />
             </div>
         );
     }
