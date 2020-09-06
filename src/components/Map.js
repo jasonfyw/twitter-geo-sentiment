@@ -13,6 +13,7 @@ import allStates from "../data/allstates.json";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
+// positional offsets for states too small to have label on its map
 const offsets = {
     VT: [50, -8],
     NH: [34, 2],
@@ -40,6 +41,7 @@ class Map extends Component {
         if (stateInfo) {
             const stateName = stateInfo.fullname;
     
+            // return data if exists
             const data = {
                 fullName: stateName,
                 sentiment: (stateName in this.state.sentimentByState) ? this.state.sentimentByState[stateName].mean : null,
@@ -57,12 +59,14 @@ class Map extends Component {
     getColour = (id) => {
         const data = this.getLocationData(id)
 
+        // generate a colour from red to green based on sentiment
         if (data !== null) {
             if (data.sentiment !== null) {
                 return `hsl(${100 * data.sentiment}, 75%, 45%)`
             }
         }
 
+        // if no data available, set colour to grey
         return 'hsl(0, 4%, 72%)'
     }
 

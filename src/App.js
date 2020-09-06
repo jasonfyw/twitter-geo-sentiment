@@ -13,6 +13,7 @@ class App extends Component {
         query: null
     }
 
+    // pass new query to Content component for it to be created
     submitQuery = (keywords) => {
         const query = {
             keywords: keywords,

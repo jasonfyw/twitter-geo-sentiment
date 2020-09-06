@@ -27,6 +27,8 @@ class Content extends Component {
     }
 
     componentDidUpdate() {
+        // check if new query has been created 
+        // check if the new query is not a duplicate to prevent infinite update loop
         if (this.props.newQuery && this.props.newQuery !== this.state.newQuery) {
             console.log(this.props.newQuery)
             this.setState({ 
