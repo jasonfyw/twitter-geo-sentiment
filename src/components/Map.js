@@ -61,7 +61,7 @@ class Map extends Component {
 
         // generate a colour from red to green based on sentiment
         if (data !== null) {
-            if (data.sentiment !== null) {
+            if (data.sentiment !== null && data.totalTweets > 0) {
                 return `hsl(${100 * data.sentiment}, 75%, 45%)`
             }
         }
