@@ -33,6 +33,7 @@ class Sidebar extends Component {
                     <p>Twitter Geo-Sentiment Analysis Tool</p>
                 </TitleDiv>
 
+                {/* QueryForm passed a function from parent to call when new query is created */}
                 <QueryForm createQuery={this.props.createQuery} />
             </SidebarWrapper>
         );

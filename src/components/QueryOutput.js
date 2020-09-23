@@ -3,11 +3,13 @@ import ReactTooltip from "react-tooltip";
 
 import Map from './Map';
 
+// displays data from query with data visualisations and heatmaps
 class QueryOutput extends Component {
     state = {
         tooltipContent: ''
     }
 
+    // function for the heatmap to set a tooltip when mouse hovers over a state
     setTooltipContent = (content) => {
         this.setState({ tooltipContent: content })
     }

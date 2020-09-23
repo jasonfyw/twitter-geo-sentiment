@@ -21,7 +21,7 @@ def process_tweet(text):
     return text
 
 
-
+# perform sentiment and numerical analysis on a dictionary of tweets with location as keys
 def analyse_collated_tweets(tweets):
     collated_predictions = {}
     total_tweets = 0
@@ -58,6 +58,7 @@ def analyse_collated_tweets(tweets):
             }
 
         else:
+            # if no data present, return empty result for location
             collated_predictions[location] = {
                 "mean": 0,
                 "total_tweets": 0,

@@ -11,6 +11,7 @@ const QueryItem = (props) => (
     </React.Fragment>
 )
 
+// displays an interactive list of previous queries when not already displaying a query
 class QueryHistory extends Component {
     state = {
         allQueries: [],

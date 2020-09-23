@@ -29,12 +29,14 @@ const SubmitButton = styled(Button)`
 `;
 
 
+// query form on the sidebar used to create a new query
 class QueryForm extends Component {
 
     state = {
         keywords: ''
     }
 
+    // calls to parent function to create a new query 
     submitQuery = () => {
         this.props.createQuery(this.state.keywords)
     }
@@ -42,6 +44,7 @@ class QueryForm extends Component {
     render() {
         return (
             <Container>
+                {/* text input field for keywords */}
                 <InputLabel>Query</InputLabel>
                 <TextInput type="text" value={this.state.keywords} placeholder="Keywords" onChange={(e) => {
                     this.setState({ keywords: e.target.value })

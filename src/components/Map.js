@@ -27,7 +27,7 @@ const offsets = {
 };
 
 
-
+// generates a heatmap of the USA based on sentiment data 
 class Map extends Component {
 
     state = {

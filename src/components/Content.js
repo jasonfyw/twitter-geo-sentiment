@@ -85,10 +85,12 @@ class Content extends Component {
                         <Spinner animation="grow" variant="dark" />
                     ) : (
                         this.state.showOutput ? (
+                            // display a query based on data in state
                             (this.state.query !== null) && (
                                 <QueryOutput query={this.state.query} />
                             )
                         ) : (
+                            // display a list of past queries
                             <React.Fragment>
                                 <h1>Create a query or select one below</h1>
                                 <QueryHistory selectQuery={this.selectQuery} />
