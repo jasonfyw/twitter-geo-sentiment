@@ -88,7 +88,7 @@ class Map extends Component {
                                             const data = this.getLocationData(geo.id)
                                             this.props.setTooltipContent(
                                                 <span>
-                                                    <b>{data.fullName} – {(data.sentiment === null) ? 'no data' : data.sentiment}</b>
+                                                    <b>{data.fullName} – {(data.sentiment === null || data.totalTweets === 0) ? 'no data' : data.sentiment}</b>
                                                     <br />
                                                     <i>Tweet count: {data.totalTweets}</i>
                                                 </span>
