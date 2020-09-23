@@ -36,7 +36,7 @@ def create_query():
 
     return jsonify({
         'keywords': keywords,
-        'total_tweets': total_tweets,
+        'totaltweets': total_tweets,
         'sentiment': tweet_sentiments
     }), 201
 
