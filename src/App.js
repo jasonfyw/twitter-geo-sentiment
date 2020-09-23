@@ -25,13 +25,19 @@ class App extends Component {
         })
     }
 
+    setShowOutput = (display) => {
+        this.setState({
+            showOutput: display
+        })
+    }
+
 
     render() {
 
         return (
             <div className="App">
                 <Sidebar createQuery={this.submitQuery} />
-                <Content showOutput={this.state.showOutput} newQuery={this.state.query} />
+                <Content showOutput={this.state.showOutput} setShowOutput={this.setShowOutput} newQuery={this.state.query} />
             </div>
         );
     }

@@ -4,6 +4,7 @@ import { Spinner } from 'react-bootstrap';
 import Axios from 'axios';
 
 import QueryOutput from './QueryOutput';
+import QueryHistory from './QueryHistory';
 
 const ContentWrapper = styled.div`
     width: 80%;
@@ -26,6 +27,25 @@ class Content extends Component {
         newQuery: null
     }
 
+    selectQuery = (id) => {
+        // called by QueryHistory
+        // communicates with parent component to switch view
+        this.props.setShowOutput(true);
+
+        this.setState({
+            loading: true
+        }, () => {
+            // retrieve query by id from API and relay the data to the QueryOutput
+            Axios.get('http://localhost:3000/queries/' + id)
+                .then(res => this.setState({
+                    loading: false,
+                    showOutput: true,
+                    query: res.data
+                }))
+        })
+
+    }
+
     componentDidUpdate() {
         // check if new query has been created 
         // check if the new query is not a duplicate to prevent infinite update loop
@@ -35,17 +55,19 @@ class Content extends Component {
                 loading: true,
                 newQuery: this.props.newQuery 
             }, () => {
-                // Axios.post('http://localhost:5000/queries', this.props.newQuery)
-                //     .then(res => this.setState({
-                //         loading: false,
-                //         query: res.data
-                //     }))
-                Axios.get('http://localhost:3000/queries/5f540e79c23cf8bca6ee7199')
+                // if valid new query is created, make request to API to generate tweets and analysis
+                Axios.post('http://localhost:3000/queries', this.props.newQuery)
                     .then(res => this.setState({
                         loading: false,
                         showOutput: true,
                         query: res.data
                     }))
+                // Axios.get('http://localhost:3000/queries/5f6b06c984ca15e94f39a1d2')
+                //     .then(res => this.setState({
+                //         loading: false,
+                //         showOutput: true,
+                //         query: res.data
+                //     }))
             })
         }
     }
@@ -59,6 +81,7 @@ class Content extends Component {
             <ContentWrapper>
                 {
                     this.state.loading ? (
+                        // Loading animation when fetching from API
                         <Spinner animation="grow" variant="dark" />
                     ) : (
                         this.state.showOutput ? (
@@ -66,7 +89,10 @@ class Content extends Component {
                                 <QueryOutput query={this.state.query} />
                             )
                         ) : (
-                            <h1>Create a query</h1>
+                            <React.Fragment>
+                                <h1>Create a query or select one below</h1>
+                                <QueryHistory selectQuery={this.selectQuery} />
+                            </React.Fragment>
                         )
                     )
                 }
