@@ -50,7 +50,6 @@ class Content extends Component {
         // check if new query has been created 
         // check if the new query is not a duplicate to prevent infinite update loop
         if (this.props.newQuery && this.props.newQuery !== this.state.newQuery) {
-            console.log(this.props.newQuery)
             this.setState({ 
                 loading: true,
                 newQuery: this.props.newQuery 
@@ -62,12 +61,6 @@ class Content extends Component {
                         showOutput: true,
                         query: res.data
                     }))
-                // Axios.get('http://localhost:3000/queries/5f6b06c984ca15e94f39a1d2')
-                //     .then(res => this.setState({
-                //         loading: false,
-                //         showOutput: true,
-                //         query: res.data
-                //     }))
             })
         }
     }
