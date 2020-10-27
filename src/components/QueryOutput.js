@@ -21,6 +21,7 @@ class QueryOutput extends Component {
             <React.Fragment>
                 <h1>Showing Twitter sentiment by state for '{data.keywords}'</h1>
                 <p>Total tweets analysed: {data.totaltweets}</p>
+                <p><b>{data.createtime}</b></p>
 
                 <Map sentimentByState={data.sentiment} setTooltipContent={this.setTooltipContent} />
 

@@ -23,8 +23,14 @@ queries = db.queries
 Make query JSON serialisable
 """
 
-# convert _id field in a document from ObjectId into a serialisable string
+# make a document object json serialisable
 def serialise_id(query):
+    # extract query create date from ObjectId and store as separate attribute
+    # (ObjectId contains information including the time of creation)
+    date = query['_id'].generation_time
+    query['createtime'] = date
+
+    # cnvert ObjectIds into strings
     query['_id'] = str(query['_id'])
     query['rawtweetsid'] = str(query['rawtweetsid'])
 
