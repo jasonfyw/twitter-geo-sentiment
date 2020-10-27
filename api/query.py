@@ -17,9 +17,10 @@ def create_query():
 
     keywords = request.json['keywords']
     max_tweets_per_request = request.json.get('max_tweets_per_request', 50)
+    locations = request.json.get('locations', [])
 
     # collect tweets from twitter API
-    tweets = collate_tweets(keywords, max_tweets_per_request)
+    tweets = collate_tweets(keywords, max_tweets_per_request, locations)
     # analyse tweets sentiment and get tweet count
     tweet_sentiments, total_tweets = analyse_collated_tweets(tweets)
 

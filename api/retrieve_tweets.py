@@ -18,12 +18,13 @@ states_list = ["California", "Colorado", "Connecticut", "New Jersey", "Delaware"
 # multiple API requests by location and collate into large collection
 def collate_tweets(
     keywords, 
-    max_tweets_per_request = 100
+    max_tweets_per_request = 100,
+    locations = states_list,
 ):
     tweets_by_location = {}
 
-    for state in states_list:
-        query = '{} place:"{}"'.format(keywords, '{}, USA'.format(state))
+    for location in locations:
+        query = '{} place:"{}"'.format(keywords, '{}, USA'.format(location))
 
         tweets = collect_results(
             {
@@ -33,6 +34,6 @@ def collate_tweets(
             result_stream_args = search_args
         )
 
-        tweets_by_location[state] = tweets
+        tweets_by_location[location] = tweets
 
     return tweets_by_location
