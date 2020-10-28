@@ -12,7 +12,7 @@ const SidebarWrapper = styled.div`
 
     padding: 1.5rem;
 
-    background-color: #D8DEE9;
+    background-color: #E5E9F0;
 `;
 
 const TitleDiv = styled.div`

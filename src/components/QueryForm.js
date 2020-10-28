@@ -61,6 +61,27 @@ const LocationLabel = styled.label`
 const RangeSlider = styled.input`
     padding: 0;
     width: 100%;
+    height: 5px;
+
+    appearance: none;  
+    outline: none;
+    background-color: #fff;
+    border-radius: 5px;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: #434C5E;
+    }
+    &::-moz-range-thumb {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #434C5E;
+    }
 `;
 const NumberInput = styled.input`
     width: 4rem;
