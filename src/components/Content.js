@@ -46,6 +46,11 @@ class Content extends Component {
 
     }
 
+    hideOutput = () => {
+        // hide the current output by resetting the stored query
+        this.setState({ query: null, showOutput: false })
+    }
+
     componentDidUpdate() {
         // check if new query has been created 
         // check if the new query is not a duplicate to prevent infinite update loop
@@ -80,7 +85,7 @@ class Content extends Component {
                         this.state.showOutput ? (
                             // display a query based on data in state
                             (this.state.query !== null) && (
-                                <QueryOutput query={this.state.query} />
+                                <QueryOutput query={this.state.query} hideOutput={this.hideOutput} />
                             )
                         ) : (
                             // display a list of past queries
