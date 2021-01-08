@@ -63,7 +63,7 @@ def get_all_queries():
 
 # get query by id
 @query.route('/queries/<string:query_id>', methods = ['GET'])
-def get_post(query_id):
+def get_query(query_id):
     query = queries.find_one({ '_id': ObjectId(query_id) })
 
     if not query:
