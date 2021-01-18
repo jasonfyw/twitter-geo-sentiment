@@ -26,6 +26,9 @@ const SmallText = styled.p`
     padding-bottom: 0;
     margin-bottom: 0.2rem;
 `;
+const ContentWrapper = styled.div`
+    padding-bottom: 3rem;
+`;
 
 // item displaying info for a single query
 const QueryItem = (props) => (
@@ -68,9 +71,9 @@ class QueryHistory extends Component {
         />)
 
         return (
-            <div>
+            <ContentWrapper>
                 {queryItems}
-            </div>
+            </ContentWrapper>
         );
     }
 }
