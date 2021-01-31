@@ -5,9 +5,6 @@ import json
 
 
 # unpickle pre-trained classifiers and vectrisers
-stock_sa_clf = pickle.load(open('sentiment_analysis/nb_sentiment_model.p', 'rb'))
-stock_sa_vectoriser = pickle.load(open('sentiment_analysis/vectoriser.p', 'rb'))
-
 general_sa_clf = pickle.load(open('sentiment_analysis/nb_general_sentiment_model.p', 'rb'))
 general_sa_vectoriser = pickle.load(open('sentiment_analysis/vectoriser_general.p', 'rb'))
 
