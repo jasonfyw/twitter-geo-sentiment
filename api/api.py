@@ -1,7 +1,4 @@
-from flask import Flask, request
-import numpy as np
-import os
-import pickle
+from flask import Flask
 
 from query import query
 
