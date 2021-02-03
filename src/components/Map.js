@@ -28,6 +28,7 @@ const offsets = {
 
 
 // generates a heatmap of the USA based on sentiment data 
+// interactive map template from react-simple-maps example bank (https://www.react-simple-maps.io/examples/map-chart-with-tooltip/)
 class Map extends Component {
 
     state = {
