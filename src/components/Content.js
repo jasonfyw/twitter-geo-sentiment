@@ -17,7 +17,7 @@ const ContentWrapper = styled.div`
     position: absolute;
 `;
 
-
+// main area of the application; it will either display a list of all the previously made queries or a particular query
 class Content extends Component {
 
     state = {
@@ -27,11 +27,13 @@ class Content extends Component {
         newQuery: null
     }
 
+
+    // communicates with parent component and switches the displayed component from the list view to information pertaining to a single query
     selectQuery = (id) => {
-        // called by QueryHistory
-        // communicates with parent component to switch view
         this.props.setShowOutput(true);
 
+        // change the loading state to true, rendering a loading icon; then makes a request to the API to retrieve a query by a specified id
+        // a promise is made by Axios and once the API returns a response, the component's state is updated with the data. The loading state is also changed to false to remove the loading icon and to display the query
         this.setState({
             loading: true
         }, () => {
@@ -46,11 +48,12 @@ class Content extends Component {
 
     }
 
+    // hide the current output by resetting the stored query
     hideOutput = () => {
-        // hide the current output by resetting the stored query
         this.setState({ query: null, showOutput: false })
     }
 
+    // componentDidUpdate() is a React life cycle method that executes when an update occurs within the component
     componentDidUpdate() {
         // check if new query has been created 
         // check if the new query is not a duplicate to prevent infinite update loop
@@ -79,7 +82,7 @@ class Content extends Component {
             <ContentWrapper>
                 {
                     this.state.loading ? (
-                        // Loading animation when fetching from API
+                        // loading animation when the component's loading state is true when awaiting a response from the API
                         <Spinner animation="grow" variant="dark" />
                     ) : (
                         this.state.showOutput ? (

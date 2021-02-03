@@ -59,6 +59,7 @@ class QueryOutput extends Component {
                     <i>0 (red) = negative</i>
                 </p>
 
+                {/* wrapper object for the tooltip to work */}
                 <ReactTooltip>{this.state.tooltipContent}</ReactTooltip>
             </React.Fragment>
         );

@@ -24,6 +24,7 @@ const Title = styled.h1`
     margin-bottom: 0rem;
 `;
 
+// a wrapper component for QueryForm that contains styling and text for the sidebar 
 class Sidebar extends Component {
     render() {
         return (

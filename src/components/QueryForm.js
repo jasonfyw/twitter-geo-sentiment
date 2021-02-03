@@ -114,11 +114,12 @@ class QueryForm extends Component {
         tweetsPerLocation: 50
     }
 
-    // calls to parent function to create a new query 
+    // calls to parent function to create a new query when the submit button is pressed 
     submitQuery = (e) => {
+        // prevents the default HTML action to redirect the user
         e.preventDefault()
 
-        // create a list of the fullnames of the selected locations 
+        // create an array of the fullnames of the selected locations 
         let locations = [];
         Object.keys(this.state.selectedLocations).forEach(k => {
             if (this.state.selectedLocations[k]) {
@@ -153,7 +154,8 @@ class QueryForm extends Component {
             return total + value
         }, 0)
 
-        // create array of list items with a checkbox and location name
+        // create array of list items with a checkbox and location name for each US state
+        // when one of the checkboxes are toggled, the location's value in the dictionary under the component's selectedLocations state is updated
         const locationInputs = allStates.map(state => 
             <li>
                 <LocationLabel>
@@ -178,8 +180,8 @@ class QueryForm extends Component {
 
         return (
             <Container>
-                {/* text input field for keywords */}
                 <form onSubmit={this.submitQuery}>
+                    {/* text input field for keywords */}
                     <InputLabel>
                         Query
                         <TextInput 
@@ -191,7 +193,7 @@ class QueryForm extends Component {
                         />
                     </InputLabel>
 
-
+                    {/* list of locations with checkboxes */}
                     <InputLabel>
                         Included locations
                         <LocationLabel>
@@ -224,7 +226,7 @@ class QueryForm extends Component {
                     </InputLabel>
 
 
-
+                    {/* numerical or slider input for the number of tweets to be retrieved for every location */}
                     <InputLabel>
                         Tweets per location
                         <RangeSlider 
@@ -243,6 +245,7 @@ class QueryForm extends Component {
                                 this.setState({ tweetsPerLocation: e.target.value })
                             }}
                         /> 
+                        {/* provides an estimate of the total number of tweets given the selected locations and the number of tweets per location. This is provided because of the usage limits on the Twitter API so that it can be estimated how much API usage a query will consume */}
                         <TotalTweetCount><i>Total tweets: {this.state.tweetsPerLocation * totalLocations}</i></TotalTweetCount>
                     </InputLabel>
 

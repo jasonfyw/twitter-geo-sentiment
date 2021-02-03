@@ -35,6 +35,7 @@ class Map extends Component {
         sentimentByState: this.props.sentimentByState
     }
 
+    // use the JSON object allStates to retrieve the names and ids of states 
     getLocationData = (id) => {
         // retrieve state full name
         const stateInfo = allStates.find(s => s.val === id);
@@ -57,10 +58,13 @@ class Map extends Component {
 
     }
 
+    // returns a colour for a state calculated based on the positivity of the sentiment data for that particular state
     getColour = (id) => {
         const data = this.getLocationData(id)
 
         // generate a colour from red to green based on sentiment
+        // HSL (hue, saturation, lightness) is used because only hue affects the colour (saturation and lightness affect its shade)
+        // hue = 0 is red (representing negative) and hue = 100 is green (representing positive)
         if (data !== null) {
             if (data.sentiment !== null && data.totalTweets > 0) {
                 return `hsl(${100 * data.sentiment}, 75%, 45%)`
@@ -77,6 +81,10 @@ class Map extends Component {
             <Container>
                 <ComposableMap data-tip="" projection="geoAlbersUsa">
                     <Geographies geography={geoUrl}>
+                        {/* 
+                        mapping elements in geographies for every state in the US.
+                        retrieve the corresponsing state outline and shape from the d3-geo library and sets tooltip data to display when the state is hovered over or clicked
+                        */}
                         {({ geographies }) => (
                             <>
                                 {geographies.map(geo => (
