@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request, abort
 from searchtweets import load_credentials, collect_results
-import json
 
 
 # load and generate a bearer token for the Premium Twitter Search API
