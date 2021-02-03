@@ -17,8 +17,13 @@ def process_tweet(text):
     text = re.sub(r'#([^\s]+)', r'\1', text) # remove the # in hashtags
     return text
 
+"""
+Analyse dictionary of tweets for their sentiment
 
-# perform sentiment and numerical analysis on a dictionary of tweets with location as keys
+perform sentiment and numerical analysis on a dictionary of tweets with location as keys
+@param tweets: dictionary with locations as keys and a corresponding array of tweet objects as values
+returns dictionary and integer
+"""
 def analyse_collated_tweets(tweets):
     collated_predictions = {}
     total_tweets = 0

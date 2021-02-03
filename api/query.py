@@ -6,12 +6,19 @@ from analyse_tweets import analyse_collated_tweets
 from retrieve_tweets import collate_tweets
 from mongodb_connection import queries, fs, serialise_id
 
+# register a blueprint, an abstraction over the endpoints allowing them to be assigned to the API in api.py
 query = Blueprint('query', __name__)
 
 
-# generate a new query; store and return results of analysis to MongoDB
+"""
+Create a new query
+
+endpoint to generate a new query; to generate sentiment analysis information and to save it into MongoDB
+"""
+# Flask decorator function to execute create_query() when a POST request is made to the /queries endpoint
 @query.route('/queries', methods = ['POST'])
 def create_query():
+    # validating POST request ensuring a valid request body is provided
     if not request.json or not 'keywords' in request.json:
         abort(400)
 
@@ -19,7 +26,7 @@ def create_query():
     max_tweets_per_request = request.json.get('max_tweets_per_request', 50)
     locations = request.json.get('locations', [])
 
-    # collect tweets from twitter API
+    # collect tweets from twitter API 
     tweets = collate_tweets(keywords, max_tweets_per_request, locations)
     # analyse tweets sentiment and get tweet count
     tweet_sentiments, total_tweets = analyse_collated_tweets(tweets)
@@ -46,26 +53,39 @@ def create_query():
     }), 201
 
 
-# get all past queries
+""" 
+Return all previously made queries from database
+
+retrieve all every query document in the database when the /queries endpoint is accessed with a GET request
+"""
 @query.route('/queries', methods = ['GET'])
 def get_all_queries():
+    # retrieve all documents in the queries table in the database
     all_queries = list(queries.find())
 
+    # return 404 error if no queries are found
     if len(all_queries) == 0:
         abort(404)
 
+    # convert the ObjectId() object into a string to allow conversion to JSON
     for query in all_queries:
         query = serialise_id(query)
 
 
     return jsonify({ 'queries': all_queries })
 
+"""
+Return a specific previously made query from database
 
-# get query by id
+# get a particular query by a specified id when the /queries/<query_id> endpoint is accessed with a GET request
+# where <query_id> is a string
+"""
 @query.route('/queries/<string:query_id>', methods = ['GET'])
 def get_query(query_id):
+    # search for one document in the database matching the id provided with the request
     query = queries.find_one({ '_id': ObjectId(query_id) })
 
+    # return 404 error if no query is found 
     if not query:
         abort(404)
 

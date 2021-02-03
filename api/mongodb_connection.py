@@ -7,12 +7,12 @@ from dotenv import load_dotenv, find_dotenv
 """
 MongoDB setup
 """
-# load MongoDB details from .env file
+# load MongoDB details as environmental variables from .env file
 load_dotenv(find_dotenv())
 MONGODB_URI = os.environ.get('MONGODB_URI')
 DB_NAME = os.environ.get('DB_NAME')
 
-# create MongoDB client, connect to queries collection in given db
+# create MongoDB client, connect to queries collection in given database
 client = MongoClient(MONGODB_URI)
 db = client[DB_NAME]
 fs = gridfs.GridFS(db)
