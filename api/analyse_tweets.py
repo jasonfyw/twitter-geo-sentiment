@@ -12,8 +12,8 @@ general_sa_vectoriser = pickle.load(open('sentiment_analysis/vectoriser_general.
 # remove unecessary elements from tweet
 def process_tweet(text):
     text = text.lower() # convert text to lowercase
-    text = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', text) # remove URLs
-    text = re.sub('@[^\s]+', 'AT_USER', text) # remove usernames
+    text = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', text) # replace URLs with 'URL'
+    text = re.sub('@[^\s]+', 'AT_USER', text) # replace user mentions with 'AT_USER'
     text = re.sub(r'#([^\s]+)', r'\1', text) # remove the # in hashtags
     return text
 
